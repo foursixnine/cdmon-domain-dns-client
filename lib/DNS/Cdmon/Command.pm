@@ -1,20 +1,21 @@
-# Minimal Mojolicious::Commands container for cdmon dns
 package DNS::Cdmon::Command;
-use Mojo::Base 'Mojolicious::Commands', -signatures;
+use Mojo::Base 'Mojolicious::Command', -signatures;
 use Carp qw(confess);
 use DNS::Cdmon;
 
-# subcommand classes live under Cdmon::Command::
-# Maybe this isn't even needed
-has namespaces => sub { ['Cdmon::Command'] };
-has message    => 'Cdmon dns crud cli client';
+# Short description
+has description => 'Lists records';
 
-has app => sub {
-    shift->app->( DNS::Cdmon->new );
-};
+# Usage message from SYNOPSIS
+has usage => sub ($self) { $self->extract_usage };
 
-sub run ( $self, @args ) {
-    $self->app->log("Command started");
+has options => undef;
+
+sub run( $self, @args ) {
+    my %options = ( quiet => 0, verbose => 0 );
+    $self->app->log->trace("run() from baseclass");
+    $self->app->log->trace( __PACKAGE__ . "run() from baseclass" );
+    return $self->options( \%options )->command(@args);
 }
 
-$SIG{__DIE__} = \&confess;
+1;

@@ -4,6 +4,8 @@ use warnings;
 use FindBin;
 use lib "$FindBin::RealBin/../lib";
 
-use DNS::Cdmon::Command;
+use DNS::Cdmon::CLI;
 
-exit DNS::Cdmon::Command->new->run(@ARGV);
+# local $SIG{__DIE__} = \&confess;
+
+exit DNS::Cdmon::CLI->new->run(@ARGV);
